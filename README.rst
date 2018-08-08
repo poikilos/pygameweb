@@ -25,26 +25,46 @@ The stack is something like: python 3.6, postgresql 9.6, Flask, py.test, sqlalch
 Quickstart
 ==========
 
-Set up the required packages::
+Set up the required python packages::
+    
+    #For now yuicompressor is needed for css compression
+    
+    #OS X:
+    brew install yuicompressor node optipng imagemagick
+    
+    #Ubuntu/Debian:
+    apt install yui-compressor nodejs optipng imagemagick
+    
+    #Fedora:
+    dnf install yuicompressor nodejs optipng ImageMagick
 
-    python3.6 -m venv anenv
+
+Set up a virtual environment::
+
+    If you have virtualenv installed, that may interfere with venv--in that case, skip the venv steps and instead try the virtualenv instructions further down.
+    Check whether you have virtualenv using the following command:
+    if [ `which virtualenv` ]; then echo "you have virtualenv"; else echo "you do not have virtualenv"; fi
+    
+    #venv
+    python3 -m venv anenv
     . ./anenv/bin/activate
+    source avirtualenv/bin/activate
+    
+    #virtualenv
+    python3 -m virtualenv --no-site-packages avirtualenv
+    
+Set up the required python packages in the virtual environment::
+    
+    #Make sure virtual environment is activated successfully above, so these changes will only affect the web app not your system.
     pip install --upgrade pip
     pip install -r requirements.dev.txt
     pip install -e .
-
-
-For now yuicompressor is needed for css compression::
-
-    brew install yuicompressor node optipng
-    apt-get install yui-compressor nodejs optipng
-
 
 Environment setup
 =================
 
 cp example.env .env
-
+# You must uncomment and set the APP_SECRET_KEY variable to the same value you will use with the export command when you follow the instructions under "Running the webserver locally" further down. 
 
 Tool setup
 ==========
@@ -62,9 +82,36 @@ One database for testing, and another one for running the app.
 
 We use alembic for db migrations. http://alembic.readthedocs.org/en/latest/
 
+Set up postgresql::
 
+    If you do not yet have a working postgresql-server setup, install the package for your operating system. If the service will not start, perhaps you did not yet initialize the storage:
+    sudo postgresql-setup initdb
+
+    # if the psql commands do not work, you have to allow local users using your pg_hba.conf file. The exact path of the file can be obtained using the following command:
+    sudo -u postgres psql -c "SHOW hba_file;"
+    
+    #then edit the file using the path above, which may be something like:
+    sudo nano /var/lib/pgsql/data/pg_hba.conf
+    
+    #if you are not familiar with postgresql security permissions, an easy and somewhat safe way to give system users access to the database using a postgresql password (as opposed to methods related to system's authentication) is
+    (commenting the original lines and keeping them for reference, or making a backup of the file first, is advisable):
+    CHANGE:
+    "host  all  all  127.0.0.1/32 ident"
+    TO:
+    "host  all  all  127.0.0.1/32 md5"
+    and CHANGE
+    "host  all  all  ::1/128      ident"
+    TO
+    "host  all  all  ::1/128      md5"
+    
+    If you are using nano, save the file using Ctrl+x, y, Enter key to confirm name.
+    
+    Then restart the postgresql service.
+    
 Set up the postgresql database::
 
+    #if you do not have a custom posgresql security configuration that applies to your user, and instead have followed the instructions above, you will have to prefix each of the createdb and psql commands with: sudo -u postgres
+    
     createdb pygame
     psql pygame -c "CREATE USER pygame WITH PASSWORD 'password';"
     psql pygame -c "GRANT ALL PRIVILEGES ON DATABASE pygame to pygame;"
@@ -134,6 +181,7 @@ The application may need a secure key, but for debugging it's not important
 that it's properly random::
 
     export APP_SECRET_KEY="s3cret-stuff-blah"
+    #must be same key as used in your .env file
 
 Finally, you can enable some Flask debugging machinery (which should be off for
 the site in production)::
