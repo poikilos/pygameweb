@@ -30,13 +30,15 @@ Set up the required python packages::
     #For now yuicompressor is needed for css compression
     
     #OS X:
-    brew install yuicompressor node optipng imagemagick
+    brew install yuicompressor node optipng python3 imagemagick
+    #if pip3 is missing, try:
+    #brew prune && brew postinstall python3
     
     #Ubuntu/Debian:
-    apt install yui-compressor nodejs optipng imagemagick
+    apt install yui-compressor nodejs optipng python3-pip imagemagick
     
     #Fedora:
-    dnf install yuicompressor nodejs optipng ImageMagick
+    dnf install yuicompressor nodejs optipng python3-pip ImageMagick
 
 
 Set up a virtual environment::
@@ -48,10 +50,10 @@ Set up a virtual environment::
     #venv
     python3 -m venv anenv
     . ./anenv/bin/activate
-    source avirtualenv/bin/activate
     
-    #virtualenv
+    #OR if you must run virtualenv (not recommended, technially deprecated by python3 venv), instead run
     python3 -m virtualenv --no-site-packages avirtualenv
+    source avirtualenv/bin/activate
     
 Set up the required python packages in the virtual environment::
     
