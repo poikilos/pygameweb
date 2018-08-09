@@ -30,8 +30,9 @@ Set up the required python packages::
     #For now yuicompressor is needed for css compression
     
     #OS X:
+    #requires Homebrew from https://brew.sh/
     brew install yuicompressor node optipng python3 imagemagick
-    #if pip3 is missing, try:
+    #if pip3 command is missing, you may have an older version--clean up python 3 as follows:
     #brew prune && brew postinstall python3
     
     #Ubuntu/Debian:
