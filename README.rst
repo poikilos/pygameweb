@@ -168,6 +168,8 @@ We use various fixtures to make writing the tests easier and faster.
 Running the webserver locally
 =============================
 
+Make sure you have activated your virtual environment using the appropriate activate command for your system above.
+
 Use an environment variable to configure the database connection (see the
 database setup steps above)::
 
@@ -191,6 +193,11 @@ the site in production)::
 Then run::
 
     pygameweb_front
+    
+To terminate the web app, press Ctrl+C.
+Flask will tell you the address for viewing the site in your browser.
+When you are done using it, be sure to either close your console window or deactivate the virtual environment using the command:
+  deactivate
 
 
 Templates with jinja2 and bootstrap
