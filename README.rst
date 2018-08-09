@@ -168,7 +168,7 @@ We use various fixtures to make writing the tests easier and faster.
 Running the webserver locally
 =============================
 
-Make sure you have activated your virtual environment using the appropriate activate command for your system above.
+Make sure your terminal's current directory is the root pygameweb folder, and have activated your virtual environment using the appropriate activate command for your system above.
 
 Use an environment variable to configure the database connection (see the
 database setup steps above)::
